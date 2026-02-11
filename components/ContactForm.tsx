@@ -23,8 +23,21 @@ export default function ContactForm() {
                     <input
                         type="email"
                         id="email"
+                        required
                         className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
                         placeholder="your@email.com"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="phone" className="block text-primary font-medium mb-1">
+                        Phone Number (with Country Code)
+                    </label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        required
+                        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
+                        placeholder="+91 XXXXX XXXXX"
                     />
                 </div>
                 <div>

@@ -13,7 +13,7 @@ const config: Config = {
       },
       fontFamily: {
         heading: ['Magnolia Script', 'cursive'],
-        body: ['Kaisei Decol', 'serif'],
+        body: ['Anaktoria', 'Kaisei Decol', 'serif'],
       },
     },
   },

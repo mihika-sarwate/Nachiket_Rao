@@ -38,7 +38,15 @@ async function getPageData() {
     client.fetch<WhyChoose>(`*[_type == "whyChoose"][0]`),
     client.fetch<Service[]>(`*[_type == "service"] | order(_createdAt asc)`),
     client.fetch<MythFact[]>(`*[_type == "mythFact"] | order(_createdAt asc)`),
-    client.fetch<Package[]>(`*[_type == "package"] | order(_createdAt asc)`),
+    client.fetch<Package[]>(`*[_type == "package"] | order(
+      select(
+        name == "Foundation Healing Package" => 0,
+        name == "Integrative Healing Package" => 1,
+        name == "Complete Inner Healing Journey" => 2,
+        3
+      ) asc,
+      _createdAt asc
+    )`),
     client.fetch<ContactInfo>(`*[_type == "contactInfo"][0]`),
   ])
 
@@ -108,7 +116,7 @@ export default async function Home() {
         <PackagesSection packages={data.packages} />
       )}
 
-      {data.contactInfo && <ContactSection contactInfo={data.contactInfo} />}
+      {data.contactInfo && <ContactSection contactInfo={data.contactInfo} settings={data.settings} />}
 
       {data.settings && <Footer settings={data.settings} />}
     </main>

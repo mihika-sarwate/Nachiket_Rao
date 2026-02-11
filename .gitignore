@@ -42,3 +42,4 @@ studio
 schemas
 sanity.config.ts
 sanity.cli.ts
+app/studio

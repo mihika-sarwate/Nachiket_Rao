@@ -12,7 +12,7 @@ export default function ServicesGrid({ services }: ServicesGridProps) {
     <section id="services" className="py-20 px-4 bg-white bg-opacity-50">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-5xl font-heading text-primary text-center mb-16">
-          Our Services
+          My Services
         </h2>
         <div className="flex flex-wrap justify-center gap-12">
           {services.map((service) => (

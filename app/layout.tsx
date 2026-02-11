@@ -24,7 +24,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-gradient-to-br from-yellow-50 via-blue-50 to-purple-50 min-h-screen">
+      <body className="min-h-screen">
         {children}
       </body>
     </html>

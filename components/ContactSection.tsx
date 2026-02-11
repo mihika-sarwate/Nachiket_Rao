@@ -1,11 +1,12 @@
 import ContactForm from './ContactForm'
-import { ContactInfo } from '@/types/sanity'
+import { ContactInfo, Settings } from '@/types/sanity'
 
 interface ContactSectionProps {
   contactInfo: ContactInfo
+  settings: Settings
 }
 
-export default function ContactSection({ contactInfo }: ContactSectionProps) {
+export default function ContactSection({ contactInfo, settings }: ContactSectionProps) {
   return (
     <section id="contact" className="py-20 px-4">
       <div className="max-w-4xl mx-auto">
@@ -18,6 +19,18 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
 
           {/* Contact Info */}
           <div className="bg-white rounded-lg shadow-xl p-8 md:p-12 flex flex-col justify-center">
+            {settings.calendlyLink && (
+              <div className="mb-8 text-center">
+                <a
+                  href={settings.calendlyLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block w-full bg-primary text-white font-bold py-3 px-6 rounded-lg hover:bg-opacity-90 transition-colors text-center shadow-md"
+                >
+                  Book Consultation
+                </a>
+              </div>
+            )}
             <div className="space-y-8">
               <div className="flex items-start">
                 <div className="text-3xl mr-4">📧</div>

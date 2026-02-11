@@ -27,8 +27,20 @@ export default function HeroSection({ settings }: HeroSectionProps) {
         <p className="text-2xl md:text-3xl text-primary mb-8 font-light">
           {settings.tagline}
         </p>
-        <div className="text-xl text-primary bg-white bg-opacity-70 inline-block px-8 py-4 rounded-full shadow-md">
-          Consultation: {settings.consultationCharge}
+        <div className="flex flex-col items-center gap-6">
+          <div className="text-xl text-primary bg-white bg-opacity-70 inline-block px-8 py-4 rounded-full shadow-md">
+            Consultation: {settings.consultationCharge}
+          </div>
+          {settings.calendlyLink && (
+            <a
+              href={settings.calendlyLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-primary text-white px-10 py-4 rounded-full text-xl font-bold hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            >
+              Book Consultation
+            </a>
+          )}
         </div>
       </div>
     </section>

@@ -16,6 +16,7 @@ export interface Settings {
     platform: string
     url: string
   }[]
+  calendlyLink?: string
 }
 
 export interface About {
