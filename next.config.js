@@ -8,6 +8,7 @@ const nextConfig = {
       },
     ],
   },
+  output: 'export',
   webpack: (config, { isServer }) => {
     // Ignore Sentry internal modules that are not needed
     config.resolve.alias = {
