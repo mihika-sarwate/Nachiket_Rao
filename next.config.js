@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Add basePath for GitHub Pages
+  basePath: '/Nachiket_Rao',
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
