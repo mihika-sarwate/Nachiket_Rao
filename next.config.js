@@ -2,6 +2,7 @@
 const nextConfig = {
   // Add basePath for GitHub Pages
   basePath: '/Nachiket_Rao',
+  trailingSlash: true,
   images: {
     unoptimized: true,
     remotePatterns: [
