@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'Anaktoria';
-  src: url('/fonts/Anaktoria.woff2') format('woff2');
+  src: url('/fonts/Anaktoria.woff2') format('woff2'),
+    url('/fonts/Anaktoria.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -11,13 +12,30 @@
 @tailwind utilities;
 
 @layer base {
+
+  html,
+  body,
+  button,
+  input,
+  textarea,
+  select {
+    font-family: 'Anaktoria', serif;
+    @apply text-primary;
+  }
+
   body {
-    @apply font-body text-primary min-h-screen;
-    background-color: #FFFDE7; /* Solid Light Yellow */
+    @apply min-h-screen;
+    background-color: #ffcc00;
+    /* Vivid Yellow */
     text-align: justify;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading;
   }
 }
@@ -26,31 +44,31 @@
   .prose {
     @apply text-primary;
   }
-  
+
   .prose p {
     @apply mb-4 leading-relaxed;
   }
-  
+
   .prose ul {
     @apply list-disc list-inside mb-4 space-y-2;
   }
-  
+
   .prose ol {
     @apply list-decimal list-inside mb-4 space-y-2;
   }
-  
+
   .prose strong {
     @apply font-semibold;
   }
-  
+
   .prose em {
     @apply italic;
   }
-  
+
   .prose h2 {
     @apply text-2xl font-heading mb-4 mt-6;
   }
-  
+
   .prose h3 {
     @apply text-xl font-heading mb-3 mt-5;
   }
@@ -60,12 +78,13 @@
   .animate-fade-in {
     animation: fadeIn 0.3s ease-in-out;
   }
-  
+
   @keyframes fadeIn {
     from {
       opacity: 0;
       transform: scale(0.95);
     }
+
     to {
       opacity: 1;
       transform: scale(1);
