@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { urlFor } from '@/lib/sanity'
@@ -12,6 +12,8 @@ interface NavbarProps {
 
 export default function Navbar({ settings }: NavbarProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const dropdownRef = useRef<HTMLDivElement>(null)
 
     const socialIcons = {
         instagram: '📸',
@@ -25,50 +27,108 @@ export default function Navbar({ settings }: NavbarProps) {
         youtube: '▶️',
     }
 
-    const navLinks = [
+    const defaultNavLinks = [
         { name: 'Home', href: '/' },
         { name: 'About', href: '#about' },
-        { name: 'Services', href: '#services' },
+        { name: 'My Mission', href: '#mission' },
+        { name: 'Why Choose', href: '#why-choose' },
+        { name: 'My Approach', href: '#approach' },
+        { name: 'Myths & Facts', href: '#myths-facts' },
         { name: 'Packages', href: '#packages' },
+        { name: 'Individual Healing', href: '#individual-healing' },
+        { name: 'Healing Modalities', href: '#modalities' },
+        { name: 'Newsletter', href: '#newsletter' },
+        { name: 'Testimonials', href: '#testimonials' },
         { name: 'Contact', href: '#contact' },
     ]
 
+    const navLinks = settings.mainMenu && settings.mainMenu.length > 0
+        ? settings.mainMenu.map(item => ({ name: item.title || 'Untitled', href: item.link || '#' }))
+        : defaultNavLinks
+
+    // Split links for desktop view
+    const VISIBLE_COUNT = 5
+    const visibleLinks = navLinks.slice(0, VISIBLE_COUNT)
+    const moreLinks = navLinks.slice(VISIBLE_COUNT)
+
+    // Handle click outside dropdown
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false)
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
+
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-md shadow-sm">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-20">
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all duration-300">
+            <div className="w-full px-6 lg:px-12">
+                <div className="flex justify-between items-center py-4">
                     {/* Logo */}
-                    <div className="flex-shrink-0 flex items-center">
+                    <Link href="/" className="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition-opacity">
                         {settings.logo && (
-                            <div className="relative h-12 w-12 mr-3">
+                            <div className="relative h-12 w-12">
                                 <Image
                                     src={urlFor(settings.logo).width(100).height(100).url()}
-                                    alt={settings.websiteName}
+                                    alt={settings.websiteName || 'Logo'}
                                     fill
                                     className="object-cover rounded-full"
                                 />
                             </div>
                         )}
-                        <span className="font-heading text-xl font-bold text-primary">
+                        <span className="font-heading text-2xl font-bold text-primary tracking-wide">
                             {settings.websiteName}
                         </span>
-                    </div>
+                    </Link>
 
                     {/* Desktop Menu */}
-                    <div className="hidden md:flex items-center space-x-8">
-                        {navLinks.map((link) => (
+                    <div className="hidden xl:flex items-center gap-6">
+                        {visibleLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className="text-primary hover:text-opacity-80 font-medium transition-colors"
+                                className="text-primary font-medium text-sm uppercase tracking-wider hover:underline underline-offset-4 decoration-2 transition-all hover:text-opacity-80 whitespace-nowrap"
                             >
                                 {link.name}
                             </Link>
                         ))}
+
+                        {/* More Dropdown */}
+                        {moreLinks.length > 0 && (
+                            <div className="relative" ref={dropdownRef}>
+                                <button
+                                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                    className="flex items-center gap-1 text-primary font-medium text-sm uppercase tracking-wider hover:underline underline-offset-4 decoration-2 transition-all hover:text-opacity-80 focus:outline-none"
+                                >
+                                    More ▾
+                                </button>
+                                {/* Dropdown Content */}
+                                {isDropdownOpen && (
+                                    <div className="absolute right-0 top-full pt-4 w-64 animate-fade-in">
+                                        <div className="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2 max-h-[70vh] overflow-y-auto">
+                                            {moreLinks.map((link) => (
+                                                <Link
+                                                    key={link.name}
+                                                    href={link.href}
+                                                    className="block px-6 py-3 text-sm text-primary hover:bg-yellow-50 transition-colors border-b border-gray-50 last:border-0"
+                                                    onClick={() => setIsDropdownOpen(false)}
+                                                >
+                                                    {link.name}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
 
                     {/* Social Icons (Desktop) */}
-                    <div className="hidden md:flex items-center space-x-4">
+                    <div className="hidden xl:flex items-center gap-4">
                         {settings.socialLinks?.map((link, index) => {
                             const icon = socialIcons[link.platform as keyof typeof socialIcons] || '🔗'
                             return (
@@ -77,7 +137,7 @@ export default function Navbar({ settings }: NavbarProps) {
                                     href={link.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-xl hover:scale-110 transition-transform"
+                                    className="text-xl hover:scale-110 transition-transform text-primary"
                                     title={link.platform}
                                 >
                                     {icon}
@@ -87,32 +147,35 @@ export default function Navbar({ settings }: NavbarProps) {
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <div className="md:hidden flex items-center">
+                    <div className="xl:hidden flex items-center">
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="text-primary focus:outline-none"
+                            className="text-primary focus:outline-none p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                            aria-label="Toggle menu"
                         >
-                            <span className="text-2xl">{isMenuOpen ? '✕' : '☰'}</span>
+                            <span className="text-3xl">{isMenuOpen ? '✕' : '☰'}</span>
                         </button>
                     </div>
                 </div>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu Overlay */}
             {isMenuOpen && (
-                <div className="md:hidden bg-white border-t">
-                    <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <div className="xl:hidden fixed inset-0 top-[80px] bg-white z-40 overflow-y-auto pb-20 animate-fade-in">
+                    <div className="px-6 py-4 space-y-2">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className="block px-3 py-2 rounded-md text-base font-medium text-primary hover:bg-gray-50"
+                                className="block px-4 py-3 rounded-xl text-lg font-medium text-primary hover:bg-yellow-50 transition-colors border-b border-gray-50 last:border-0"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 {link.name}
                             </Link>
                         ))}
-                        <div className="flex space-x-4 px-3 py-2 mt-4 border-t pt-4">
+
+                        {/* Mobile Social Links */}
+                        <div className="flex justify-center gap-8 pt-8 pb-4">
                             {settings.socialLinks?.map((link, index) => {
                                 const icon = socialIcons[link.platform as keyof typeof socialIcons] || '🔗'
                                 return (
@@ -121,7 +184,7 @@ export default function Navbar({ settings }: NavbarProps) {
                                         href={link.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-xl"
+                                        className="text-3xl hover:scale-110 transition-transform"
                                     >
                                         {icon}
                                     </a>

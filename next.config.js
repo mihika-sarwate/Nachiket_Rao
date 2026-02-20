@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Add basePath for GitHub Pages
-  basePath: '/Nachiket_Rao',
+  // Add basePath for GitHub Pages only when building for production
+  basePath: process.env.NODE_ENV === 'production' ? '/Nachiket_Rao' : '',
   trailingSlash: true,
   images: {
     unoptimized: true,
@@ -12,7 +13,7 @@ const nextConfig = {
       },
     ],
   },
-  output: 'export',
+  output: process.env.NODE_ENV === 'production' ? 'export' : undefined,
   webpack: (config, { isServer }) => {
     // Ignore Sentry internal modules that are not needed
     config.resolve.alias = {

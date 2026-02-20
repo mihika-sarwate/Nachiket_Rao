@@ -1,22 +1,23 @@
 export interface Settings {
-  websiteName: string
-  tagline: string
-  consultationCharge: string
-  welcomeTitle: string
-  welcomeContent: any[]
-  logo?: {
-    asset: {
-      _ref: string
-      _type: string
-    }
-  }
-  primaryColor: string
+  websiteName?: string
+  tagline?: string
+  consultationCharge?: string
+  consultationPrice?: string
+  consultationPaymentUrl?: string
+  calendlyLink?: string
+  welcomeTitle?: string
+  welcomeContent?: any
+  logo?: any
+  primaryColor?: string
   backgroundGradient?: string
-  socialLinks?: {
+  socialLinks?: Array<{
     platform: string
     url: string
-  }[]
-  calendlyLink?: string
+  }>
+  mainMenu?: Array<{
+    title: string
+    link: string
+  }>
 }
 
 export interface About {
@@ -52,12 +53,15 @@ export interface Service {
     }
   }
   icon?: string
+  duration?: string
+  price?: string
+  displayOrder?: number
 }
 
 export interface MythFact {
   _id: string
   myth: string
-  fact: string
+  fact: any[]
 }
 
 export interface Package {
@@ -67,10 +71,46 @@ export interface Package {
   price: string
   description?: any[]
   includes: string[]
+  displayOrder?: number
 }
 
 export interface ContactInfo {
   email: string
   phone: string
   address: string
+}
+
+export interface Newsletter {
+  title: string
+  description: string
+  emailPlaceholder: string
+  buttonText: string
+}
+
+export interface Testimonial {
+  _id: string
+  name: string
+  text: any[]
+  video?: {
+    asset: {
+      _ref: string
+      url: string
+    }
+  }
+  image?: {
+    asset: {
+      _ref: string
+      _type: string
+    }
+  }
+  order?: number
+}
+
+export interface IndividualHealing {
+  _id: string
+  name: string
+  duration: string
+  price: string
+  description?: any[]
+  displayOrder?: number
 }

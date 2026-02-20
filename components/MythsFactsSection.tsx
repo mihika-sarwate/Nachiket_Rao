@@ -1,4 +1,5 @@
 import { MythFact } from '@/types/sanity'
+import RichText from './RichText'
 
 interface MythsFactsSectionProps {
   mythsFacts: MythFact[]
@@ -6,31 +7,49 @@ interface MythsFactsSectionProps {
 
 export default function MythsFactsSection({ mythsFacts }: MythsFactsSectionProps) {
   return (
-    <section className="py-20 px-4">
+    <section id="myths-facts" className="py-20 px-4 scroll-mt-20">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-5xl font-heading text-primary text-center mb-16">
-          Myths & Facts
+          Myths & Facts of Hypnotherapy
         </h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          {mythsFacts.map((item) => (
-            <div
-              key={item._id}
-              className="bg-white rounded-lg shadow-lg p-6 hover:shadow-2xl transition-shadow duration-300"
-            >
-              <div className="mb-4">
-                <span className="inline-block bg-red-100 text-red-600 px-4 py-2 rounded-full text-sm font-semibold mb-2">
-                  MYTH
-                </span>
-                <p className="text-lg text-gray-700 italic">{item.myth}</p>
-              </div>
-              <div>
-                <span className="inline-block bg-green-100 text-green-600 px-4 py-2 rounded-full text-sm font-semibold mb-2">
-                  FACT
-                </span>
-                <p className="text-lg text-primary font-medium">{item.fact}</p>
-              </div>
+
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+          {/* Table Header - Visible on Desktop */}
+          <div className="hidden md:grid md:grid-cols-2 bg-primary/10 border-b border-gray-200">
+            <div className="p-6 text-2xl font-bold text-center text-primary border-r border-gray-200">
+              Myths of Hypnotherapy
             </div>
-          ))}
+            <div className="p-6 text-2xl font-bold text-center text-primary">
+              Facts of Hypnotherapy
+            </div>
+          </div>
+
+          {/* Table Body */}
+          <div className="divide-y divide-gray-200">
+            {mythsFacts.map((item) => (
+              <div key={item._id} className="grid md:grid-cols-2 group hover:bg-gray-50 transition-colors">
+                {/* Myth Column */}
+                <div className="p-8 md:border-r border-gray-200 relative">
+                  <div className="md:hidden mb-2 text-sm font-bold text-red-500 uppercase tracking-wider">
+                    Myths of Hypnotherapy
+                  </div>
+                  <p className="text-lg text-gray-700 italic font-medium">
+                    &ldquo;{item.myth}&rdquo;
+                  </p>
+                </div>
+
+                {/* Fact Column */}
+                <div className="p-8 relative">
+                  <div className="md:hidden mb-2 text-sm font-bold text-green-600 uppercase tracking-wider">
+                    Facts of Hypnotherapy
+                  </div>
+                  <div className="text-gray-700 prose prose-primary max-w-none">
+                    <RichText content={item.fact} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
